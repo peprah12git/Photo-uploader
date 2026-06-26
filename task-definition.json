@@ -1,0 +1,30 @@
+{
+  "family": "photo-uploader-task",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "256",
+  "memory": "512",
+  "executionRoleArn": "arn:aws:iam::904233109505:role/photo-uploader-task-execution-role",
+  "taskRoleArn": "arn:aws:iam::904233109505:role/photo-uploader-task-role",
+  "containerDefinitions": [
+    {
+      "name": "photo-uploader",
+      "image": "<IMAGE1_NAME>",
+      "portMappings": [
+        {
+          "containerPort": 8080,
+          "protocol": "tcp"
+        }
+      ],
+      "essential": true,
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/photo-uploader",
+          "awslogs-region": "eu-central-1",
+          "awslogs-stream-prefix": "ecs"
+        }
+      }
+    }
+  ]
+}
