@@ -12,6 +12,9 @@ permissions:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
       - name: Checkout code
@@ -31,6 +34,7 @@ jobs:
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: eu-central-1
+          audience: sts.amazonaws.com
 
       - name: Login to Amazon ECR
         id: login-ecr
