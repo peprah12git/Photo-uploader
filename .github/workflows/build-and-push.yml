@@ -59,4 +59,5 @@ jobs:
           ARTIFACT_BUCKET: photo-uploader-artifacts-904233109505
         run: |
           zip source.zip taskdef.json appspec.yml
+          unzip -l source.zip
           aws s3 cp source.zip s3://$ARTIFACT_BUCKET/templates/source.zip
