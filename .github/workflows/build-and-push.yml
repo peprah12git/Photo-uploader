@@ -46,13 +46,15 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Build, tag and push image to ECR
+      # Build the image but DO NOT push yet. The ECR push is what triggers
+      # the CodePipeline (via the ECR EventBridge rule), so it must happen
+      # LAST -- after the matching source.zip (taskdef) is already in S3.
+      - name: Build and tag Docker image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: photo-uploader
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
-          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
       - name: Inject stack outputs into taskdef
         run: |
@@ -90,3 +92,13 @@ jobs:
           zip source.zip taskdef.json appspec.yml
           unzip -l source.zip
           aws s3 cp source.zip s3://$ARTIFACT_BUCKET/templates/source.zip
+
+      # PUSH LAST: this is the pipeline trigger. By now source.zip with the
+      # correct taskdef is already uploaded, so the pipeline picks up the
+      # matching artifact instead of a stale one.
+      - name: Push Docker image to ECR (triggers pipeline)
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: photo-uploader
+        run: |
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
