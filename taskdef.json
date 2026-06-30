@@ -46,7 +46,7 @@
       "secrets": [
         {
           "name": "DB_PASSWORD",
-          "valueFrom": "arn:aws:secretsmanager:eu-central-1:904233109505:secret:/photo-uploader/db/password"
+          "valueFrom": "arn:aws:secretsmanager:eu-central-1:904233109505:secret:/photo-uploader/db/password:password::"
         }
       ],
       "logConfiguration": {
