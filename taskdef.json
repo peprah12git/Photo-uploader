@@ -31,10 +31,6 @@
           "value": "adminuser"
         },
         {
-          "name": "DB_PASSWORD",
-          "valueFrom": "arn:aws:secretsmanager:eu-central-1:904233109505:secret:/photo-uploader/db/password"
-        },
-        {
           "name": "S3_BUCKET_NAME",
           "value": "photo-uploader-photos-904233109505"
         },
@@ -45,6 +41,12 @@
         {
           "name": "AWS_REGION",
           "value": "eu-central-1"
+        }
+      ],
+      "secrets": [
+        {
+          "name": "DB_PASSWORD",
+          "valueFrom": "arn:aws:secretsmanager:eu-central-1:904233109505:secret:/photo-uploader/db/password"
         }
       ],
       "logConfiguration": {
