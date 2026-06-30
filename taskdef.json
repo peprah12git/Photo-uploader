@@ -32,7 +32,7 @@
         },
         {
           "name": "DB_PASSWORD",
-          "value": "SimpleTest123"
+          "valueFrom": "arn:aws:secretsmanager:eu-central-1:904233109505:secret:/photo-uploader/db/password"
         },
         {
           "name": "S3_BUCKET_NAME",
