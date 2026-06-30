@@ -54,6 +54,35 @@ jobs:
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
 
+      - name: Inject stack outputs into taskdef
+        run: |
+          DB_HOST=$(aws cloudformation list-exports \
+            --query "Exports[?Name=='photo-uploader-DBInstanceEndpoint'].Value" \
+            --output text --region eu-central-1)
+          S3_BUCKET=$(aws cloudformation list-exports \
+            --query "Exports[?Name=='photo-uploader-PhotoBucketName'].Value" \
+            --output text --region eu-central-1)
+          CF_DOMAIN=$(aws cloudformation list-exports \
+            --query "Exports[?Name=='photo-uploader-CloudFrontDomainName'].Value" \
+            --output text --region eu-central-1)
+
+          if [ -z "$DB_HOST" ] || [ -z "$S3_BUCKET" ] || [ -z "$CF_DOMAIN" ]; then
+            echo "ERROR: one or more stack exports were empty."
+            echo "DB_HOST=$DB_HOST  S3_BUCKET=$S3_BUCKET  CF_DOMAIN=$CF_DOMAIN"
+            exit 1
+          fi
+
+          echo "DB_HOST=$DB_HOST"
+          echo "S3_BUCKET=$S3_BUCKET"
+          echo "CF_DOMAIN=$CF_DOMAIN"
+
+          sed -i "s|<DB_HOST>|$DB_HOST|g" taskdef.json
+          sed -i "s|<S3_BUCKET_NAME>|$S3_BUCKET|g" taskdef.json
+          sed -i "s|<CLOUDFRONT_DOMAIN>|$CF_DOMAIN|g" taskdef.json
+
+          echo "----- Final taskdef.json -----"
+          cat taskdef.json
+
       - name: Upload taskdef and appspec to S3
         env:
           ARTIFACT_BUCKET: photo-uploader-artifacts-904233109505

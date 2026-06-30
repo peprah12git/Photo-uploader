@@ -20,7 +20,7 @@
       "environment": [
         {
           "name": "DB_HOST",
-          "value": "photo-uploader-db.c14awss8ucz8.eu-central-1.rds.amazonaws.com"
+          "value": "<DB_HOST>"
         },
         {
           "name": "DB_NAME",
@@ -32,11 +32,11 @@
         },
         {
           "name": "S3_BUCKET_NAME",
-          "value": "photo-uploader-photos-904233109505"
+          "value": "<S3_BUCKET_NAME>"
         },
         {
           "name": "CLOUDFRONT_DOMAIN",
-          "value": "d1e9ibx9qv0zc0.cloudfront.net"
+          "value": "<CLOUDFRONT_DOMAIN>"
         },
         {
           "name": "AWS_REGION",
