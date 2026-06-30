@@ -32,7 +32,7 @@
         },
         {
           "name": "DB_PASSWORD",
-          "value": "PhotoUploader2026"
+          "value": "SimpleTest123"
         },
         {
           "name": "S3_BUCKET_NAME",
