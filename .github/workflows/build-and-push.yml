@@ -87,7 +87,7 @@ jobs:
 
       - name: Upload taskdef and appspec to S3
         env:
-          ARTIFACT_BUCKET: photo-uploader-artifacts-904233109505
+          ARTIFACT_BUCKET: photo-uploader-artifacts-885703011275
         run: |
           zip source.zip taskdef.json appspec.yml
           unzip -l source.zip
